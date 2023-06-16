@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import me.ibrahimsn.lib.api.Country
 import me.ibrahimsn.lib.R
+import java.lang.Exception
 
 class CountryAdapter(
     @LayoutRes private var itemLayout: Int,
@@ -60,7 +61,14 @@ class CountryAdapter(
 
         fun bind(country: Country) {
             this.boundItem = country
-            imageViewFlag.setImageResource(getFlagResource(country.iso2))
+            val flagResource = try {
+                getFlagResource(country.iso2)
+            } catch (e: Exception){
+                null
+            }
+            flagResource?.let {
+                imageViewFlag.setImageResource(it)
+            }
             textViewName.text = country.name
             textViewCode.text = country.code.toString()
         }
